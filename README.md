@@ -1,49 +1,53 @@
 # Go Cheat Sheet
 
 # Index
-1. [Basic Syntax](#basic-syntax)
-2. [Operators](#operators)
+1. 
+2. [Basic Syntax](#basic-syntax)
+3. [Operators](#operators)
     * [Arithmetic](#arithmetic)
     * [Comparison](#comparison)
     * [Logical](#logical)
     * [Other](#other)
-3. [Declarations](#declarations)
-4. [Functions](#functions)
+4. [Declarations](#declarations)
+5. [Functions](#functions)
     * [Functions as values and closures](#functions-as-values-and-closures)
     * [Variadic Functions](#variadic-functions)
-5. [Built-in Types](#built-in-types)
-6. [Type Conversions](#type-conversions)
-7. [Packages](#packages)
-8. [Control structures](#control-structures)
+6. [Built-in Types](#built-in-types)
+7. [Type Conversions](#type-conversions)
+8. [Packages](#packages)
+9. [Control structures](#control-structures)
     * [If](#if)
     * [Loops](#loops)
     * [Switch](#switch)
-9. [Arrays, Slices, Ranges](#arrays-slices-ranges)
+10. [Arrays, Slices, Ranges](#arrays-slices-ranges)
     * [Arrays](#arrays)
     * [Slices](#slices)
     * [Operations on Arrays and Slices](#operations-on-arrays-and-slices)
-10. [Maps](#maps)
-11. [Structs](#structs)
-12. [Pointers](#pointers)
-13. [Interfaces](#interfaces)
-14. [Embedding](#embedding)
-15. [Errors](#errors)
-16. [Concurrency](#concurrency)
+11. [Maps](#maps)
+12. [Structs](#structs)
+13. [Pointers](#pointers)
+14. [Interfaces](#interfaces)
+15. [Embedding](#embedding)
+16. [Errors](#errors)
+17. [Concurrency](#concurrency)
     * [Goroutines](#goroutines)
     * [Channels](#channels)
     * [Channel Axioms](#channel-axioms)
-17. [Printing](#printing)
-18. [Reflection](#reflection)
+18. [Printing](#printing)
+19. [Reflection](#reflection)
     * [Type Switch](#type-switch)
     * [Examples](https://github.com/a8m/reflect-examples)
-19. [Snippets](#snippets)
+20. [Snippets](#snippets)
     * [Files Embedding](#files-embedding)
     * [HTTP Server](#http-server)
 
 ## Credits
 
 Most example code taken from [A Tour of Go](http://tour.golang.org/), which is an excellent introduction to Go.
-If you're new to Go, do that tour. Seriously.
+If you're new to Go, do that tour. Seriously. Additional useful references are:
+
+* https://golang.org/doc/code
+* https://devhints.io/go
 
 ## Go in a Nutshell
 
@@ -59,6 +63,19 @@ If you're new to Go, do that tour. Seriously.
 * Has closures
 * Pointers, but not pointer arithmetic
 * Built-in concurrency primitives: Goroutines and Channels
+
+# Getting Started
+
+## Installation
+
+In order to install Go on your system, use this [link](https://golang.org/doc/install) and follow your OS specific instructions.
+
+## Go Organization
+
+When writing a Go program, generally the first step is making a repository (or cloning one in).
+
+```
+```
 
 # Basic Syntax
 
