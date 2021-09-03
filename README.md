@@ -74,8 +74,58 @@ In order to install Go on your system, use this [link](https://golang.org/doc/in
 
 When writing a Go program, generally the first step is making a repository (or cloning one in).
 
+Within this repository is going to be the various source files we need to compile to build our program. These files are first organized into *packages*/. A *package* is is all of the source files in the same directory that have to be compiled together. Each package has a name and all variables, constants, types, and functions defined in a source file are visble to alkl others in the same package, somewhat like a namespace.
+
+Next, these packages are gathered into a *module*. A module collects related Go packages, and typically there is a sole module in a repository, located at the root of the repository (there can be multiple modules in a repository, but that shouldn't come up here). At the root of the repository there will be a `go.mod` file that declares the *module path* or the prefix for importing any of the packages contained within the module. The module contains the packages within the directory containing the `go.mod` file as well as any packages contained in subdirectories of that directory.
+
+The module path also inidicates where go should look to find the module. The module `golang.org/x/tools` would be fetched from `https://golang.org/x/tools`. 
+
+An *import path* is a string used to import a package. A package's import path is its module path joined with its subdirectory within the module. For example, the module `github.com/google/go-cmp` contains a package in the directory `cmp/`. That package's import path is `github.com/google/go-cmp/cmp`. As mentioned above, Go would attempt to fetch this module from `https://github.com/google/go-cmp` Packages in the standard library do not have a module path prefix.
+
+## Setting up a Repository and Building
+
+Now lets put what we have discussed about Go organization to practice. Lets suppose we want the module path `github.com/user/hello`, first let us start by creating a repository in our home directory.
+
 ```
+$ mkdir hello # Alternatively, clone it if it already exists in version control.
+$ cd hello
 ```
+
+Now we can use the `go mod init` command to create our module.
+
+`go mod init github.com/user/hello`
+
+Now say we write a simple Go program. The first statement in a Go source file must be package *name*. Executable commands must always use package *main*.
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+    fmt.Println("Hello Go")
+}
+```
+
+We can use the `go install command` to build this program.
+
+`$ go install example.com/user/hello`
+
+The location of the binary will be specified by the GOPATH (usually `$HOME/go/bin`) and for convienience you can add this to your PATH.
+
+Now we can run our program `hello`.
+
+```
+# Windows users should consult https://github.com/golang/go/wiki/SettingGOPATH
+# for setting %PATH%.
+$ export PATH=$PATH:$(dirname $(go list -f '{{.Target}}' .))
+$ hello
+```
+
+## Other Important commands
+
+* `go build`: Run in the directory containing a package to try building a specific package
+* `go mod tidy`: Fetches all dependecies from remote modules
 
 # Basic Syntax
 
@@ -187,65 +237,6 @@ var x, str = returnMulti2()
 
 ```
 
-### Functions As Values And Closures
-```go
-func main() {
-    // assign a function to a name
-    add := func(a, b int) int {
-        return a + b
-    }
-    // use the name to call the function
-    fmt.Println(add(3, 4))
-}
-
-// Closures, lexically scoped: Functions can access values that were
-// in scope when defining the function
-func scope() func() int{
-    outer_var := 2
-    foo := func() int { return outer_var}
-    return foo
-}
-
-func another_scope() func() int{
-    // won't compile because outer_var and foo not defined in this scope
-    outer_var = 444
-    return foo
-}
-
-
-// Closures
-func outer() (func() int, int) {
-    outer_var := 2
-    inner := func() int {
-        outer_var += 99 // outer_var from outer scope is mutated.
-        return outer_var
-    }
-    inner()
-    return inner, outer_var // return inner func and mutated outer_var 101
-}
-```
-
-### Variadic Functions
-```go
-func main() {
-	fmt.Println(adder(1, 2, 3)) 	// 6
-	fmt.Println(adder(9, 9))	// 18
-
-	nums := []int{10, 20, 30}
-	fmt.Println(adder(nums...))	// 60
-}
-
-// By using ... before the type name of the last parameter you can indicate that it takes zero or more of those parameters.
-// The function is invoked like any other function except we can pass as many arguments as we want.
-func adder(args ...int) int {
-	total := 0
-	for _, v := range args { // Iterates over the arguments whatever the number.
-		total += v
-	}
-	return total
-}
-```
-
 ## Built-in Types
 ```go
 bool
@@ -284,6 +275,21 @@ u := uint(f)
 * Convention: package name == last name of import path (import path `math/rand` => package `rand`)
 * Upper case identifier: exported (visible from other packages)
 * Lower case identifier: private (not visible from other packages)
+
+To import other packages, after the package declaration, include a import statement.
+
+```go
+package main
+
+import (
+	"fmt"
+	"math/rand"
+)
+```
+
+### Important Packages
+
+* [`bytes`](https://pkg.go.dev/bytes@go1.17): Imp
 
 ## Control structures
 
@@ -611,100 +617,6 @@ func main() {
 	fmt.Println(val)
 }
 ```
-
-# Concurrency
-
-## Goroutines
-Goroutines are lightweight threads (managed by Go, not OS threads). `go f(a, b)` starts a new goroutine which runs `f` (given `f` is a function).
-
-```go
-// just a function (which can be later started as a goroutine)
-func doStuff(s string) {
-}
-
-func main() {
-    // using a named function in a goroutine
-    go doStuff("foobar")
-
-    // using an anonymous inner function in a goroutine
-    go func (x int) {
-        // function body goes here
-    }(42)
-}
-```
-
-## Channels
-```go
-ch := make(chan int) // create a channel of type int
-ch <- 42             // Send a value to the channel ch.
-v := <-ch            // Receive a value from ch
-
-// Non-buffered channels block. Read blocks when no value is available, write blocks until there is a read.
-
-// Create a buffered channel. Writing to a buffered channels does not block if less than <buffer size> unread values have been written.
-ch := make(chan int, 100)
-
-close(ch) // closes the channel (only sender should close)
-
-// read from channel and test if it has been closed
-v, ok := <-ch
-
-// if ok is false, channel has been closed
-
-// Read from channel until it is closed
-for i := range ch {
-    fmt.Println(i)
-}
-
-// select blocks on multiple channel operations, if one unblocks, the corresponding case is executed
-func doStuff(channelOut, channelIn chan int) {
-    select {
-    case channelOut <- 42:
-        fmt.Println("We could write to channelOut!")
-    case x := <- channelIn:
-        fmt.Println("We could read from channelIn")
-    case <-time.After(time.Second * 1):
-        fmt.Println("timeout")
-    }
-}
-```
-
-### Channel Axioms
-- A send to a nil channel blocks forever
-
-  ```go
-  var c chan string
-  c <- "Hello, World!"
-  // fatal error: all goroutines are asleep - deadlock!
-  ```
-- A receive from a nil channel blocks forever
-
-  ```go
-  var c chan string
-  fmt.Println(<-c)
-  // fatal error: all goroutines are asleep - deadlock!
-  ```
-- A send to a closed channel panics
-
-  ```go
-  var c = make(chan string, 1)
-  c <- "Hello, World!"
-  close(c)
-  c <- "Hello, Panic!"
-  // panic: send on closed channel
-  ```
-- A receive from a closed channel returns the zero value immediately
-
-  ```go
-  var c = make(chan int, 2)
-  c <- 1
-  c <- 2
-  close(c)
-  for i := 0; i < 3; i++ {
-      fmt.Printf("%d ", <-c)
-  }
-  // 1 2 0
-  ```
 
 ## Printing
 
