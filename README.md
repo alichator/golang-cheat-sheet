@@ -1,22 +1,26 @@
 # Go Cheat Sheet
 
 # Index
-1. 
-2. [Basic Syntax](#basic-syntax)
-3. [Operators](#operators)
+1. [Getting Started](#getting-started)
+    * [Installation](#installation)
+    * [Go Organization](#go-organization]
+    * [Setting up a Repository and Building](#setting-up-a-repository-and-building}
+    * [Other Important commands](#other-important-commands)
+3. [Basic Syntax](#basic-syntax)
+4. [Operators](#operators)
     * [Arithmetic](#arithmetic)
     * [Comparison](#comparison)
     * [Logical](#logical)
     * [Other](#other)
-4. [Declarations](#declarations)
-5. [Functions](#functions)
+5. [Declarations](#declarations)
+6. [Functions](#functions)
     * [Functions as values and closures](#functions-as-values-and-closures)
-    * [Variadic Functions](#variadic-functions)
-6. [Built-in Types](#built-in-types)
-7. [Type Conversions](#type-conversions)
-8. [Packages](#packages)
+7. [Built-in Types](#built-in-types)
+8. [Type Conversions](#type-conversions)
+9. [Packages](#packages)
     * [Important Packages](#important-packages)
-10. [Control structures](#control-structures)
+10. [FIle IO Example](#file-io-example)
+11. [Control structures](#control-structures)
     * [If](#if)
     * [Loops](#loops)
     * [Switch](#switch)
