@@ -15,31 +15,25 @@
 6. [Built-in Types](#built-in-types)
 7. [Type Conversions](#type-conversions)
 8. [Packages](#packages)
-9. [Control structures](#control-structures)
+    * [Important Packages](#important-packages)
+10. [Control structures](#control-structures)
     * [If](#if)
     * [Loops](#loops)
     * [Switch](#switch)
-10. [Arrays, Slices, Ranges](#arrays-slices-ranges)
+11. [Arrays, Slices, Ranges](#arrays-slices-ranges)
     * [Arrays](#arrays)
     * [Slices](#slices)
     * [Operations on Arrays and Slices](#operations-on-arrays-and-slices)
-11. [Maps](#maps)
-12. [Structs](#structs)
-13. [Pointers](#pointers)
-14. [Interfaces](#interfaces)
-15. [Embedding](#embedding)
-16. [Errors](#errors)
-17. [Concurrency](#concurrency)
-    * [Goroutines](#goroutines)
-    * [Channels](#channels)
-    * [Channel Axioms](#channel-axioms)
+12. [Maps](#maps)
+13. [Structs](#structs)
+14. [Pointers](#pointers)
+15. [Interfaces](#interfaces)
+16. [Embedding](#embedding)
+17. [Errors](#errors)
 18. [Printing](#printing)
 19. [Reflection](#reflection)
     * [Type Switch](#type-switch)
     * [Examples](https://github.com/a8m/reflect-examples)
-20. [Snippets](#snippets)
-    * [Files Embedding](#files-embedding)
-    * [HTTP Server](#http-server)
 
 ## Credits
 
@@ -289,7 +283,49 @@ import (
 
 ### Important Packages
 
-* [`bytes`](https://pkg.go.dev/bytes@go1.17): Imp
+* [`bytes`](https://pkg.go.dev/bytes@go1.17): Implements functions for manipulating byte slices
+* [`fmt`](https://pkg.go.dev/fmt@go1.17): Implements functions for I/O
+* [`os`](https://pkg.go.dev/os@go1.17): Provides interface to OS functionalities
+* [`math`](https://pkg.go.dev/math@go1.17): Lots of useful math functions
+* [`strings`])(https://pkg.go.dev/strings@go1.17): Functions for manipulating UTF-8 encoded strings
+* [`time`](https://pkg.go.dev/time@go1.17): Functions for measuring and displaying time
+
+## File IO Example
+
+```go
+package main
+
+import (
+  "bytes"
+  "fmt"
+  "math"
+  "os"
+  "strings"
+  "time"
+)
+
+if len(os.Args) != 2 {
+        panic("Not enough (or too many) command line args")
+    }
+    file, err := os.Open(os.Args[1])
+    if err != nil {
+    	panic(err)
+    }
+
+    var readBuff bytes.Buffer
+
+    _, err = readBuff.ReadFrom(file)
+
+    if err != nil {
+        panic(err)
+    }
+
+    var new_ct string = readBuff.String()
+    fmt.Println("SUccessful read")
+}
+
+
+```
 
 ## Control structures
 
@@ -657,59 +693,5 @@ func main() {
 }
 ```
 
-# Snippets
-
-## Files Embedding
-
-Go programs can embed static files using the `"embed"` package as follows:
-
-```go
-package main
-
-import (
-	"embed"
-	"log"
-	"net/http"
-)
-
-// content holds the static content (2 files) or the web server.
-//go:embed a.txt b.txt
-var content embed.FS
-
-func main() {
-	http.Handle("/", http.FileServer(http.FS(content)))
-	log.Fatal(http.ListenAndServe(":8080", nil))
-}
-```
-
-[Full Playground Example](https://play.golang.org/p/pwWxdrQSrYv)
-
-## HTTP Server
-```go
-package main
-
-import (
-    "fmt"
-    "net/http"
-)
-
-// define a type for the response
-type Hello struct{}
-
-// let that type implement the ServeHTTP method (defined in interface http.Handler)
-func (h Hello) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-    fmt.Fprint(w, "Hello!")
-}
-
-func main() {
-    var h Hello
-    http.ListenAndServe("localhost:4000", h)
-}
-
-// Here's the method signature of http.ServeHTTP:
-// type Handler interface {
-//     ServeHTTP(w http.ResponseWriter, r *http.Request)
-// }
-```
 
 
