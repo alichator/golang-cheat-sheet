@@ -3,8 +3,8 @@
 # Index
 1. [Getting Started](#getting-started)
     * [Installation](#installation)
-    * [Go Organization](#go-organization]
-    * [Setting up a Repository and Building](#setting-up-a-repository-and-building}
+    * [Go Organization](#go-organization)
+    * [Setting up a Repository and Building](#setting-up-a-repository-and-building)
     * [Other Important commands](#other-important-commands)
 3. [Basic Syntax](#basic-syntax)
 4. [Operators](#operators)
