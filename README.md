@@ -291,7 +291,7 @@ import (
 * [`fmt`](https://pkg.go.dev/fmt@go1.17): Implements functions for I/O
 * [`os`](https://pkg.go.dev/os@go1.17): Provides interface to OS functionalities
 * [`math`](https://pkg.go.dev/math@go1.17): Lots of useful math functions
-* [`strings`])(https://pkg.go.dev/strings@go1.17): Functions for manipulating UTF-8 encoded strings
+* [`strings`](https://pkg.go.dev/strings@go1.17): Functions for manipulating UTF-8 encoded strings
 * [`time`](https://pkg.go.dev/time@go1.17): Functions for measuring and displaying time
 
 ## File IO Example
